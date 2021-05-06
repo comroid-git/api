@@ -16,16 +16,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class AnnotationProcessor extends AbstractProcessor implements Processor {
+    public abstract void onAnnotation(TypeElement annotation, Element annotated);
+
     @Override
     public final boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (TypeElement annotation : annotations) {
             Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
 
-
             Map<Boolean, List<Element>> annotatedMethods = annotatedElements.stream().collect(
-                    Collectors.partitioningBy(element ->
-                            ((ExecutableType) element.asType()).getParameterTypes().size() == 1
-                                    && element.getSimpleName().toString().startsWith("set")));
+                    Collectors.partitioningBy(element -> {
+
+                        element.get
+
+
+
+                        return ((ExecutableType) element.asType()).getParameterTypes().size() == 1
+                                && element.getSimpleName().toString().startsWith("set");
+                    }));
 
             List<Element> setters = annotatedMethods.get(true);
             List<Element> otherMethods = annotatedMethods.get(false);
